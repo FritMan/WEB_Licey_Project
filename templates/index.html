@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1 class="mb-4">Добро пожаловать на сайт физических формул!</h1>
+        <p class="lead">Этот ресурс содержит основные формулы по разделам физики и удобные калькуляторы для расчетов.</p>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Доступные разделы</h5>
+                <div class="row">
+                    {% for section in ['mechanics', 'thermodynamics', 'electromagnetism', 'optics'] %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ section.capitalize() }}</h5>
+                                <a href="{{ url_for('show_formulas', section=section) }}" class="btn btn-primary">Просмотреть формулы</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Калькуляторы</h5>
+                <a href="{{ url_for('mechanics_calculator') }}" class="btn btn-success mb-2 w-100">Калькулятор механики</a>
+                <a href="{{ url_for('electromagnetism_calculator') }}" class="btn btn-success w-100">Калькулятор электромагнетизма</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

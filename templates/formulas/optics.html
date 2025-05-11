@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Оптика{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Формулы оптики</h1>
+    
+    <div class="row">
+        {% for formula in formulas %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title">{{ formula.name }}</h3>
+                    <div class="formula-display bg-light p-3 mb-3 text-center fs-4">
+                        {{ formula.formula }}
+                    </div>
+                    <p class="card-text">{{ formula.description }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

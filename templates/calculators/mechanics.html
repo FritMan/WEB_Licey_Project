@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Калькулятор механики{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Калькулятор механики</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Введите данные
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.mass.label(class="form-label") }}
+                            {{ form.mass(class="form-control") }}
+                            {% if form.mass.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.mass.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.acceleration.label(class="form-label") }}
+                            {{ form.acceleration(class="form-control") }}
+                            {% if form.acceleration.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.acceleration.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.velocity.label(class="form-label") }}
+                            {{ form.velocity(class="form-control") }}
+                            {% if form.velocity.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.velocity.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            {{ form.calculate_force(class="btn btn-success") }}
+                            {{ form.calculate_energy(class="btn btn-success") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            {% if result is not none %}
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    Результат расчета
+                </div>
+                <div class="card-body">
+                    {% if calculation_type == 'force' %}
+                        <p>При массе <strong>{{ form.mass.data }} кг</strong> и ускорении <strong>{{ form.acceleration.data }} м/с²</strong>:</p>
+                        <h3 class="text-center">F = {{ "%.2f"|format(result) }} Н</h3>
+                        <p class="text-muted">Формула: F = m × a</p>
+                    {% elif calculation_type == 'energy' %}
+                        <p>При массе <strong>{{ form.mass.data }} кг</strong> и скорости <strong>{{ form.velocity.data }} м/с</strong>:</p>
+                        <h3 class="text-center">Eₖ = {{ "%.2f"|format(result) }} Дж</h3>
+                        <p class="text-muted">Формула: Eₖ = (m × v²)/2</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    Справка по формулам
+                </div>
+                <div class="card-body">
+                    <p><strong>Второй закон Ньютона:</strong> F = m × a</p>
+                    <ul>
+                        <li>F - сила (Н)</li>
+                        <li>m - масса (кг)</li>
+                        <li>a - ускорение (м/с²)</li>
+                    </ul>
+                    
+                    <p><strong>Кинетическая энергия:</strong> Eₖ = (m × v²)/2</p>
+                    <ul>
+                        <li>Eₖ - кинетическая энергия (Дж)</li>
+                        <li>m - масса (кг)</li>
+                        <li>v - скорость (м/с)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

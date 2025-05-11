@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Калькулятор электромагнетизма{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Калькулятор электромагнетизма</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Введите данные
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.voltage.label(class="form-label") }}
+                            {{ form.voltage(class="form-control") }}
+                            {% if form.voltage.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.voltage.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.resistance.label(class="form-label") }}
+                            {{ form.resistance(class="form-control") }}
+                            {% if form.resistance.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.resistance.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.charge1.label(class="form-label") }}
+                            {{ form.charge1(class="form-control") }}
+                            {% if form.charge1.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.charge1.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.charge2.label(class="form-label") }}
+                            {{ form.charge2(class="form-control") }}
+                            {% if form.charge2.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.charge2.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.distance.label(class="form-label") }}
+                            {{ form.distance(class="form-control") }}
+                            {% if form.distance.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.distance.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            {{ form.calculate_current(class="btn btn-success") }}
+                            {{ form.calculate_force(class="btn btn-success") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            {% if result is not none %}
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    Результат расчета
+                </div>
+                <div class="card-body">
+                    {% if calculation_type == 'current' %}
+                        <p>При напряжении <strong>{{ form.voltage.data }} В</strong> и сопротивлении <strong>{{ form.resistance.data }} Ом</strong>:</p>
+                        <h3 class="text-center">I = {{ "%.4f"|format(result) }} А</h3>
+                        <p class="text-muted">Формула: I = U / R</p>
+                    {% elif calculation_type == 'force' %}
+                        <p>При зарядах <strong>{{ form.charge1.data }} Кл</strong> и <strong>{{ form.charge2.data }} Кл</strong> на расстоянии <strong>{{ form.distance.data }} м</strong>:</p>
+                        <h3 class="text-center">F = {{ "%.2e"|format(result) }} Н</h3>
+                        <p class="text-muted">Формула: F = k × (|q₁ × q₂|) / r²</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    Справка по формулам
+                </div>
+                <div class="card-body">
+                    <p><strong>Закон Ома:</strong> I = U / R</p>
+                    <ul>
+                        <li>I - сила тока (А)</li>
+                        <li>U - напряжение (В)</li>
+                        <li>R - сопротивление (Ом)</li>
+                    </ul>
+                    
+                    <p><strong>Закон Кулона:</strong> F = k × (|q₁ × q₂|) / r²</p>
+                    <ul>
+                        <li>F - сила взаимодействия (Н)</li>
+                        <li>q₁, q₂ - величины зарядов (Кл)</li>
+                        <li>r - расстояние между зарядами (м)</li>
+                        <li>k ≈ 9×10⁹ Н·м²/Кл²</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
